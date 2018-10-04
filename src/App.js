@@ -1,27 +1,36 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import "./App.css";
+import Winning from './winning';
+import NotYetWinning from './notYetWinning';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      winningNumber: Math.floor(Math.random() * 100),
+      enteredNumber: null,
+      guesses: []
+    };
+  }
+
   render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+    if (this.state.enteredNumber !== this.state.winningNumber) {
+      return (
+        <NotYetWinning 
+          setState={e => this.setState(e)}
+          winningNumber={this.state.winningNumber}
+          enteredNumber={this.state.enteredNumber}
+          guesses={this.state.guesses}
+        />
+      );
+    }
+    if (this.state.enteredNumber === this.state.winningNumber) {
+      return (
+        <Winning 
+          setState={(e) => this.setState(e)}
+        />
+      );
+    }
   }
 }
 
