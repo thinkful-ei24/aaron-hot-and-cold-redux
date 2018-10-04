@@ -51,6 +51,7 @@ export default function NotYetWinning(props) {
         <button type="submit">Submit Guess</button>
       </form>
       <p>{feedback()}</p>
+      <p>You have made {guesses().length} guesses.</p>
       <p>
         {label()}
         {guesses()
@@ -67,7 +68,17 @@ export default function NotYetWinning(props) {
         }
       >
         Restart Game
+      </button><br />
+      <button
+        onClick={() =>
+          props.setState({
+            inGame: false,
+          })
+        }
+      >
+        Help
       </button>
+
     </div>
   );
 }
