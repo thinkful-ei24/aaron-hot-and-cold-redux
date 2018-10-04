@@ -41,13 +41,13 @@ export default function NotYetWinning(props) {
         onSubmit={e => {
           e.preventDefault();
           props.setState({
-            enteredNumber: Number(e.currentTarget[0].value),
+            enteredNumber: Number(e.currentTarget.someName.value),
             guesses: [...props.guesses, Number(e.currentTarget[0].value)]
           });
           e.currentTarget[0].value = "";
         }}
       >
-        <input type="number" placeholder="1 - 100" />
+        <input name="someName" type="number" placeholder="1 - 100" />
         <button type="submit">Submit Guess</button>
       </form>
       <p>{feedback()}</p>
