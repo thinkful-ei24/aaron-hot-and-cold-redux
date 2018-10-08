@@ -1,6 +1,8 @@
 import React from "react";
+import { connect } from 'react-redux';
+import { enteredNumber, winningNumber, guesses, inGame, noGuesses } from './actions/actions';
 
-export default function NotYetWinning(props) {
+function NotYetWinning(props) {
 
     function feedback() {
         if (!props.enteredNumber) {
@@ -20,8 +22,8 @@ export default function NotYetWinning(props) {
         }
       }
     
-      function guesses() {
-        return props.guesses;
+      function guessesFunc() {
+        return props.guesses.guesses;
       }
     
       function label() {
@@ -39,11 +41,14 @@ export default function NotYetWinning(props) {
       <form
         className="numForm"
         onSubmit={e => {
+          console.log(props.guesses.guesses);
           e.preventDefault();
-          props.setState({
-            enteredNumber: Number(e.currentTarget.someName.value),
-            guesses: [...props.guesses, Number(e.currentTarget[0].value)]
-          });
+          props.dispatch(
+            enteredNumber(Number(e.currentTarget.someName.value)),
+          )
+          props.dispatch(
+            guesses(Number(e.currentTarget.someName.value))
+          )
           e.currentTarget[0].value = "";
         }}
       >
@@ -51,29 +56,31 @@ export default function NotYetWinning(props) {
         <button type="submit">Submit Guess</button>
       </form>
       <p>{feedback()}</p>
-      <p>You have made {guesses().length} guesses.</p>
+      <p>You have made {guessesFunc().length} guesses.</p>
       <p>
         {label()}
-        {guesses()
+        {guessesFunc()
           .toString()
           .replace(/,/g, ", ")}
       </p>
       <button
-        onClick={() =>
-          props.setState({
-            enteredNumber: null,
-            winningNumber: Math.floor(Math.random() * 100),
-            guesses: []
-          })
-        }
+        onClick={() => {
+          props.dispatch(
+            enteredNumber(null)
+          )
+          props.dispatch(
+            winningNumber(Math.floor(Math.random() * 100)),
+          )
+          props.dispatch(
+            noGuesses(5)
+          )
+        }}
       >
         Restart Game
       </button><br />
       <button
         onClick={() =>
-          props.setState({
-            inGame: false,
-          })
+          props.dispatch(inGame(false))
         }
       >
         Help
@@ -82,3 +89,9 @@ export default function NotYetWinning(props) {
     </div>
   );
 }
+
+function mapStateToProps(state) {
+  return state;
+}
+
+export default connect(mapStateToProps)(NotYetWinning);

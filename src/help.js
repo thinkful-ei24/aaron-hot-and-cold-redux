@@ -1,6 +1,8 @@
 import React from "react";
+import { connect } from 'react-redux';
+import { winningNumber, enteredNumber, inGame, noGuesses } from './actions/actions';
 
-export default function Help(props) {
+function Help(props) {
   return (
     <div className="App">
       <header>Help</header>
@@ -13,25 +15,27 @@ export default function Help(props) {
       </p>
       <button
         onClick={() =>
-          props.setState({
-            inGame: true
-          })
+          props.dispatch(inGame(true))
         }
       >
         Back to Current Game
       </button>
       <button
-        onClick={() =>
-          props.setState({
-            inGame: true,
-            enteredNumber: null,
-            winningNumber: Math.floor(Math.random() * 100),
-            guesses: []
-          })
-        }
+        onClick={() => {
+          props.dispatch(inGame(true))
+          props.dispatch(enteredNumber(null))
+          props.dispatch(winningNumber(Math.floor(Math.random() * 100)))
+          props.dispatch(noGuesses())
+        }}
       >
         Restart Game
       </button>
     </div>
   );
 }
+
+function mapStateToProps(state) {
+  return state;
+}
+
+export default connect(mapStateToProps)(Help);

@@ -3,40 +3,53 @@ import "./App.css";
 import Winning from "./winning";
 import NotYetWinning from "./notYetWinning";
 import Help from "./help";
+import { connect } from 'react-redux';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      winningNumber: Math.floor(Math.random() * 100),
-      enteredNumber: null,
-      guesses: [],
-      inGame: true
-    };
+    // this.state = {
+    //   winningNumber: Math.floor(Math.random() * 100),
+    //   enteredNumber: null,
+    //   guesses: [],
+    //   inGame: true
+    // };
   }
   render() {
-    if (!this.state.inGame) {
-      return <Help setState={hello => this.setState(hello)} />;
+    console.log(this.props)
+    if (!this.props.inGameReducer.inGame) {
+      return <Help 
+        inGame={this.props.inGameReducer.inGame}
+        winningNumber={this.props.winningReducer.winningNumber}
+        enteredNumber={this.props.enteredReducer.enteredNumber}
+        guesses={this.props.guesses.guesses}
+      />;
     }
     if (
-      this.state.inGame &&
-      this.state.enteredNumber !== this.state.winningNumber
+      this.props.inGameReducer.inGame &&
+      this.props.enteredReducer.enteredNumber !== this.props.winningReducer.winningNumber
     ) {
       return (
         <NotYetWinning
-          setState={e => this.setState(e)}
-          winningNumber={this.state.winningNumber}
-          enteredNumber={this.state.enteredNumber}
-          guesses={this.state.guesses}
+          winningNumber={this.props.winningReducer.winningNumber}
+          enteredNumber={this.props.enteredReducer.enteredNumber}
+          guesses={this.props.guesses.guesses}
         />
       );
     }
     if (
-      this.state.inGame &&
-      this.state.enteredNumber === this.state.winningNumber
+      this.props.inGameReducer.inGame &&
+      this.props.enteredReducer.enteredNumber === this.props.winningReducer.winningNumber
     ) {
-      return <Winning setState={e => this.setState(e)} />;
+
+      return <Winning 
+        winningNumber={this.props.winningReducer.winningNumber}
+        enteredNumber={this.props.enteredReducer.enteredNumber}
+        guesses={this.props.guesses.guesses}
+      />;
     }
   }
 }
-export default App;
+function mapStateToProps(state) { return state; }
+
+export default connect(mapStateToProps)(App);
